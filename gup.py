@@ -13,45 +13,45 @@ def run(cmd, capture=True):
     res = subprocess.run(cmd, shell=True, text=True, capture_output=capture)
     if res.returncode != 0:
         if capture and res.stderr:
-            print(f"{C_RED}❌ Ошибка: {res.stderr.strip()}{C_RESET}")
+            print(f"{C_RED}❌ Error: {res.stderr.strip()}{C_RESET}")
         sys.exit(res.returncode)
     return res.stdout.strip() if capture else None
 
 def main():
-    # 1. Проверка на git-репозиторий
+    # 1. Check if inside a git repository
     try:
         run("git rev-parse --is-inside-work-tree")
     except SystemExit:
-        print(f"{C_RED}❌ Ошибка: Текущая папка — не git-репозиторий.{C_RESET}")
+        print(f"{C_RED}❌ Error: Current directory is not a git repository.{C_RESET}")
         sys.exit(1)
 
-    # 2. Индексация файлов
+    # 2. Stage changes
     run("git add .")
 
-    # 3. Проверка секретных файлов в staging
+    # 3. Check for sensitive files in staging
     staged_files = run("git diff --name-only --cached").splitlines()
     dangerous_patterns = [".env", "id_rsa", "credentials", "secret", ".pem"]
     warnings = [f for f in staged_files if any(p in f.lower() for p in dangerous_patterns)]
 
     if warnings:
-        print(f"\n{C_RED}⚠️  ВНИМАНИЕ! В индекс попали подозрительные файлы:{C_RESET}")
+        print(f"\n{C_RED}⚠️ WARNING! Potentially sensitive files staged:{C_RESET}")
         for w in warnings:
             print(f"   - {w}")
-        confirm = input(f"{C_YELLOW}Всё равно отправить? (y/N): {C_RESET}").strip().lower()
+        confirm = input(f"{C_YELLOW}Push anyway? (y/N): {C_RESET}").strip().lower()
         if confirm != 'y':
-            print(f"{C_RED}Отмена. Снимите файлы с индекса: git restore --staged{C_RESET}")
+            print(f"{C_RED}Aborted. Unstage files using: git restore --staged <file>{C_RESET}")
             sys.exit(1)
 
-    # 4. Pull с autostash (защищает от конфликтов)
-    print(f"{C_BLUE}📥 Подтягиваем изменения (git pull --rebase --autostash)...{C_RESET}")
+    # 4. Pull with autostash
+    print(f"{C_BLUE}📥 Pulling changes (git pull --rebase --autostash)...{C_RESET}")
     run("git pull --rebase --autostash", capture=False)
 
-    # 5. Проверка изменений после pull
+    # 5. Check if there are changes to commit after pull
     if not run("git status --porcelain"):
-        print(f"{C_GREEN}✨ Ветка чиста, коммитить нечего.{C_RESET}")
+        print(f"{C_GREEN}✨ Working tree clean, nothing to commit.{C_RESET}")
         return
 
-    # 6. Сообщение коммита
+    # 6. Build commit message
     if len(sys.argv) > 1:
         commit_msg = " ".join(sys.argv[1:])
     else:
@@ -60,13 +60,13 @@ def main():
         commit_msg = f"auto({branch}): update {timestamp}"
 
     # 7. Commit & Push
-    print(f"{C_YELLOW}📝 Коммитим: '{commit_msg}'...{C_RESET}")
+    print(f"{C_YELLOW}📝 Committing: '{commit_msg}'...{C_RESET}")
     run(f'git commit -m "{commit_msg}"')
 
-    print(f"{C_BLUE}🚀 Отправляем на сервер (git push)...{C_RESET}")
+    print(f"{C_BLUE}🚀 Pushing to remote (git push)...{C_RESET}")
     run("git push", capture=False)
 
-    print(f"{C_GREEN}🎉 Готово! Все изменения на сервере.{C_RESET}")
+    print(f"{C_GREEN}🎉 Done! All changes are up to date.{C_RESET}")
 
 if __name__ == "__main__":
     main()
