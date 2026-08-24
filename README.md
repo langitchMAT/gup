@@ -20,5 +20,5 @@
 1. Скачайте репозиторий или скопируйте файл `gup.py`:
 
 ```bash
-git clone [https://github.com/ВАШ_НИК/gup.git](https://github.com/ВАШ_НИК/gup.git)
+git clone [https://github.com/langitchMAT/gup.git](https://github.com/langitchMAT/gup.git)
 cd gup
