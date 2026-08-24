@@ -1,54 +1,47 @@
-# 🚀 gup (Git Update & Push)
+# 6 gup (Git Update & Push)
 
-**gup** — это быстрая CLI-утилита на Python для автоматизации Git-рутины (`add`, `pull`, `commit`, `push`) в одну команду со встроенными проверками безопасности.
+**gup** is a lightweight Python CLI utility designed to automate routine Git workflows (`add`, `pull`, `commit`, `push`) into a single command with built-in safety checks.
 
-Больше не нужно вводить цепочку из 4 команд при каждом мелком обновлении.
-
----
-
-## ✨ Особенности
-
-- 🔒 **Защита от утечек:** Проверяет staging на наличие чувствительных файлов (`.env`, `id_rsa`, `.pem` и др.) перед коммитом.
-- 🔄 **Авто-синхронизация:** Использует `git pull --rebase --autostash`, чтобы подтянуть чужие изменения без лишних merge-коммитов и конфликтов с незакоммиченными файлами.
-- ⏱ **Авто-сообщение коммита:** Если сообщение не передано, генерирует коммит с именем ветки и таймштампом (`auto(main): update 2026-08-25 00:03`).
-- ⚡️ **Без зависимостей:** Работает на чистом Python 3 из стандартной библиотеки.
+Eliminate the need to type repetitive multi-step Git commands for everyday updates.
 
 ---
 
-## 📥 Установка
+## ✄ Features
 
-1. Клонируйте репозиторий:
-
-```bash
-git clone https://github.com/langitchMAT/gup.git
-cd gup
-```
-
-2. Сделайте скрипт исполняемым и переместите его в `~/.local/bin` под именем `gup`:
-
-```bash
-chmod +x gup.py
-mv gup.py ~/.local/bin/gup
-```
-
-*(Убедитесь, что `~/.local/bin` добавлен в вашу переменную `PATH`).*
+- 🐘 **Leak Prevention:** Scans staged files for sensitive data (`.env`, `id_rsa`, `.pem`, etc.) before committing.
+- 𝄳 **Auto-Sync:** Runs `git pull --rebase --autostash` to fetch remote updates without creating merge commits or breaking unstaged changes.
+- ⍱ **Smart Commit Messages:** Generates an automatic commit message with the branch name suffixed with a timestamp if none is provided.
+- ⚡️ **Zewo Dependencies:** Powered entirely by Python 3 standard libraries.
 
 ---
 
-## 🚀 Использование
+## 🐤i Installation
 
-Из любого Git-репозитория в терминале:
+1. Clone the repository:
 
-```bash
-# Автоматический коммит с таймштампом
-gup
+ git clone https://github.com/langitchMAT/gup.git
+ cd gup
 
-# Кастомное сообщение коммита
-gup fix user authorization bug
-```
+2. Make the script executable and move it to `~/.local/bin` as `gup`:
+
+ chmod +x gup.py
+ mv gup.py ~/.local/bin/gup
+
+*(Ensure `~/.local/bin` is in your `PATH` environment variable).*
 
 ---
 
-## 📄 Лицензия
+## 🐘 Usage
 
-[MIT](LICENSE)
+Run it inside any Git repository:
+
+ # Automatic commit with timestamp
+ gup
+ 
+ # Custom commit message
+ gup fix user authorization bug
+
+---
+
+## � License
+mMIT](LICENSE)
