@@ -44,7 +44,7 @@ Run it inside any Git repository:
 gup
 
 # Custom commit message
-gup fix user authorization bug
+gup "commit message"
 ```
 
 ---
