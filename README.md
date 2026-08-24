@@ -20,7 +20,7 @@ Eliminate the need to type repetitive multi-step Git commands for everyday updat
 1. Clone the repository:
 
 ```bash
-git clone [https://github.com/langitchMAT/gup.git](https://github.com/langitchMAT/gup.git)
+git clone https://github.com/langitchMAT/gup.git
 cd gup
 ```
 
